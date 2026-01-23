@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-workshop-nginx
+  labels:
+    app: back-workshop-nginx
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: back-workshop-nginx
+  template:
+    metadata:
+      labels:
+        app: back-workshop-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-workshop-nginx
+spec:
+  type: NodePort
+  selector:
+    app: back-workshop-nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      # nodePort: 30080   # uncomment to fix NodePort
